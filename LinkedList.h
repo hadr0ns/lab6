@@ -11,8 +11,12 @@ class LinkedList: public LinkedListInterface<T>
 
 public:
 
-	LinkedList(void) {};
-	~LinkedList(void) {};
+	LinkedList(void) {
+		head = NULL;
+	};
+	~LinkedList(void) {
+		clear();
+	};
 
 	/*
 	insertHead
@@ -29,7 +33,6 @@ public:
 		}
 		Node* toAdd = new Node();
 		toAdd->data = value;
-		toAdd->next = NULL;
 		if (head == NULL){
 			head = toAdd;
 			head->data = toAdd->data;
@@ -68,7 +71,7 @@ public:
 		toAdd->data = value;
 		toAdd->next = NULL;
 		temp->next = toAdd;
-
+		//delete toAdd;
 	};
 
 	/*
@@ -115,12 +118,11 @@ public:
 		if (!find(value)) {
 			return;
 		}
-		Node* temp = head;
-		if (temp->data == value){
-			head = temp->next;
-			delete temp;
+		if (value == head->data){
+			removeHead();
 			return;
 		}
+		Node* temp = head;
 		while (temp->next->data != value){
 			temp = temp->next;
 		}
@@ -131,6 +133,13 @@ public:
 		delete temp;
 	};
 
+	void removeHead() {
+		Node* temp = head;
+		head = temp->next;
+		delete temp;
+		return;
+	}
+
 	/*
 	clear
 
@@ -139,9 +148,7 @@ public:
 	void clear(){
 		if (head != NULL){
 			while (head !=NULL){
-				Node* temp = head;
-				head = head->next;
-				remove(temp->data);
+				removeHead();
 			}
 		}
 	};
